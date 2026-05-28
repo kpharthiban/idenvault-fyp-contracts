@@ -26,6 +26,7 @@ export interface CredentialAnchorInterface extends Interface {
   getFunction(
     nameOrSignature:
       | "anchorCredential"
+      | "batchAnchorCredentials"
       | "credentials"
       | "registry"
       | "revokeCredential"
@@ -40,6 +41,10 @@ export interface CredentialAnchorInterface extends Interface {
     functionFragment: "anchorCredential",
     values: [string, BytesLike]
   ): string;
+  encodeFunctionData(
+    functionFragment: "batchAnchorCredentials",
+    values: [string[], BytesLike[]]
+  ): string;
   encodeFunctionData(functionFragment: "credentials", values: [string]): string;
   encodeFunctionData(functionFragment: "registry", values?: undefined): string;
   encodeFunctionData(
@@ -53,6 +58,10 @@ export interface CredentialAnchorInterface extends Interface {
 
   decodeFunctionResult(
     functionFragment: "anchorCredential",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "batchAnchorCredentials",
     data: BytesLike
   ): Result;
   decodeFunctionResult(
@@ -150,6 +159,12 @@ export interface CredentialAnchor extends BaseContract {
     "nonpayable"
   >;
 
+  batchAnchorCredentials: TypedContractMethod<
+    [refIds: string[], dataHashes: BytesLike[]],
+    [void],
+    "nonpayable"
+  >;
+
   credentials: TypedContractMethod<
     [arg0: string],
     [
@@ -187,6 +202,13 @@ export interface CredentialAnchor extends BaseContract {
     nameOrSignature: "anchorCredential"
   ): TypedContractMethod<
     [refId: string, dataHash: BytesLike],
+    [void],
+    "nonpayable"
+  >;
+  getFunction(
+    nameOrSignature: "batchAnchorCredentials"
+  ): TypedContractMethod<
+    [refIds: string[], dataHashes: BytesLike[]],
     [void],
     "nonpayable"
   >;

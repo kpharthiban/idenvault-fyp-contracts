@@ -29,6 +29,27 @@ contract CredentialAnchor {
         emit CredentialAnchored(refId, msg.sender, dataHash);
     }
 
+    function batchAnchorCredentials(
+        string[] memory refIds,
+        bytes32[] memory dataHashes
+    ) external {
+        require(registry.isIssuerTrusted(msg.sender), "Not a trusted issuer");
+        require(refIds.length == dataHashes.length, "Arrays must be same length");
+        require(refIds.length > 0, "Empty batch");
+        require(refIds.length <= 50, "Batch too large");
+
+        for (uint256 i = 0; i < refIds.length; i++) {
+            require(credentials[refIds[i]].issuedAt == 0, "Credential already exists");
+            credentials[refIds[i]] = Credential(
+                dataHashes[i],
+                msg.sender,
+                block.timestamp,
+                false
+            );
+            emit CredentialAnchored(refIds[i], msg.sender, dataHashes[i]);
+        }
+    }
+
     function revokeCredential(string memory refId) external {
         require(credentials[refId].issuer == msg.sender, "Not the issuer");
         credentials[refId].revoked = true;

@@ -113,7 +113,7 @@ export const contracts = {
     ]
   },
   credentialAnchor: {
-    address: '0x3a57261fE599ffd43BA58C47BB06Ed11AA3e3484',
+    address: '0x48E772116389005FbeB7808b66fB63a73f9f264f',
     abi: [
         {
         "inputs": [
@@ -184,6 +184,24 @@ export const contracts = {
             }
         ],
         "name": "anchorCredential",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+        },
+        {
+        "inputs": [
+            {
+            "internalType": "string[]",
+            "name": "refIds",
+            "type": "string[]"
+            },
+            {
+            "internalType": "bytes32[]",
+            "name": "dataHashes",
+            "type": "bytes32[]"
+            }
+        ],
+        "name": "batchAnchorCredentials",
         "outputs": [],
         "stateMutability": "nonpayable",
         "type": "function"
