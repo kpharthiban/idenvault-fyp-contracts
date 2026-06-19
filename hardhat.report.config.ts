@@ -5,6 +5,11 @@ import "hardhat-gas-reporter";
 import dotenv from "dotenv";
 dotenv.config();
 
+// This config is used exclusively for generating the mochawesome HTML test report.
+// Run with: npx hardhat test --config hardhat.report.config.ts
+//
+// Output: test-results/test-report.html
+
 const config: HardhatUserConfig = {
   solidity: "0.8.20",
 
@@ -31,13 +36,18 @@ const config: HardhatUserConfig = {
     ],
   },
 
-  // Gas reporter — runs on every test, writes table to test-results/gas-report.txt
   gasReporter: {
-    enabled: true,
-    outputFile: "test-results/gas-report.txt",
-    noColors: true,
-    currency: "USD",
-    token: "ETH",
+    enabled: false,
+  },
+
+  mocha: {
+    reporter: require.resolve("mochawesome"),
+    reporterOptions: {
+      reportDir: "test-results",
+      reportFilename: "test-report",
+      quiet: false,
+      overwrite: true,
+    },
   },
 };
 

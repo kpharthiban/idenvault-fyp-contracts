@@ -1,0 +1,36 @@
+
+  CredentialAnchor
+    anchorCredential()
+      ✔ SC-CA-01: trusted issuer - credential stored on-chain and CredentialAnchored emitted
+      ✔ SC-CA-02: duplicate refId - reverts with 'Credential already exists'
+      ✔ SC-CA-03: untrusted wallet - reverts with 'Not a trusted issuer'
+    batchAnchorCredentials()
+      ✔ SC-CA-04: batch of 3 valid credentials - all stored on-chain and 3 CredentialAnchored events emitted
+      ✔ SC-CA-05: mismatched array lengths - reverts with 'Arrays must be same length'
+      ✔ SC-CA-06: empty arrays - reverts with 'Empty batch'
+      ✔ SC-CA-07: 51 entries exceeds limit - reverts with 'Batch too large'
+      ✔ BONUS: duplicate refId within same batch - reverts with 'Credential already exists'
+    revokeCredential()
+      ✔ SC-CA-08: original issuer revokes - revoked flag set to true and CredentialRevoked emitted
+      ✔ SC-CA-09: different wallet attempts revocation - reverts with 'Not the issuer'
+    verifyCredential()
+      ✔ SC-VC-01: correct hash on active credential - returns (valid: true, revoked: false, issuer: address)
+      ✔ SC-VC-02: correct hash on revoked credential - returns (valid: true, revoked: true, issuer: address)
+      ✔ SC-VC-03: wrong hash on active credential - returns (valid: false, revoked: false, issuer: address)
+      ✔ SC-VC-04: non-existent refId - returns (valid: false, revoked: false, issuer: zero address)
+
+  IssuerRegistry
+    registerIssuer()
+      ✔ SC-IR-01: admin wallet registers issuer - isIssuerTrusted returns true and IssuerRegistered emitted
+      ✔ SC-IR-03: non-admin wallet call reverts with 'Not admin'
+    revokeIssuer()
+      ✔ SC-IR-02: admin wallet revokes issuer - isIssuerTrusted returns false and IssuerRevoked emitted
+      ✔ SC-IR-04: non-admin wallet call reverts with 'Not admin'
+    isIssuerTrusted()
+      ✔ SC-IR-05: never-registered address returns false
+    Re-registration lifecycle
+      ✔ SC-IR-06: register then revoke then re-register - final state is trusted
+
+
+  20 passing (2s)
+
